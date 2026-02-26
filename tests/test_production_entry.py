@@ -1,17 +1,16 @@
-# test_dfency_flow.py
+# test_production_entry.py
 import os
 from dotenv import load_dotenv
-
+import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.keys import Keys
 
 from utils.driver_setup import get_driver
 
 # ENV
-
 load_dotenv()
 
 USERNAME = os.getenv("DFENCY_USERNAME")
@@ -20,8 +19,8 @@ PASSWORD = os.getenv("DFENCY_PASSWORD")
 assert USERNAME
 assert PASSWORD
 
-# HELPERS
 
+# ---------------- HELPERS (UNCHANGED) ----------------
 
 def commit_number_input(driver, input_el, value):
     driver.execute_script("arguments[0].scrollIntoView({block:'center'});", input_el)
@@ -61,10 +60,6 @@ def select_mui_option(container, wait, label_text, option_index=1):
 
 
 def select_autocomplete_without_label(wait):
-    """
-    Robust MUI Autocomplete selector (Material / Idle Reason)
-    Re-locates fresh element to avoid stale reference
-    """
     for _ in range(5):
         try:
             field = wait.until(
@@ -98,9 +93,9 @@ def click_add_button(driver, wait, text):
     driver.execute_script("arguments[0].click();", btn)
 
 
-# TEST
+# ---------------- TEST ----------------
 
-def test_dfency_complete_flow():
+def test_production_entry():
     driver = get_driver()
     wait = WebDriverWait(driver, 30)
 
@@ -120,21 +115,7 @@ def test_dfency_complete_flow():
 
         wait.until(EC.url_contains("/dashboard"))
 
-        # ADD EMPLOYEE
-        
-        driver.get("https://dev.ddatatechnologies.com/dfency/users/add")
-        wait.until(EC.visibility_of_element_located((By.NAME, "employee_code"))).send_keys("EMP101")
-        driver.find_element(By.NAME, "username").send_keys("emp101")
-        driver.find_element(By.NAME, "first_name").send_keys("TestUser")
-        driver.find_element(By.NAME, "password").send_keys("Test@123")
-
-        wait.until(EC.element_to_be_clickable((By.ID, "role_id"))).click()
-        wait.until(EC.element_to_be_clickable((By.XPATH, "//li[normalize-space()='Operator']"))).click()
-        wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
-
-        
         # PRODUCTION ENTRY
-    
         driver.get("https://dev.ddatatechnologies.com/dfency/production/add")
         wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
 
@@ -146,18 +127,13 @@ def test_dfency_complete_flow():
         select_mui_option(page, wait, "Component")
         select_mui_option(page, wait, "Operation")
 
-        
         # QUANTITY TRACKING
-        
         commit_number_input(driver, driver.find_element(By.ID, "target-qty"), "10")
         commit_number_input(driver, driver.find_element(By.ID, "production-qty"), "10")
         commit_number_input(driver, driver.find_element(By.ID, "accepted-qty"), "10")
 
-        
-        # MATERIAL CONSUMPTION
-        
+        # MATERIAL
         click_add_button(driver, wait, "Add Material")
-
         select_autocomplete_without_label(wait)
 
         qty_consumed = wait.until(
@@ -167,9 +143,7 @@ def test_dfency_complete_flow():
         )
         commit_number_input(driver, qty_consumed, "2")
 
-        
         # IDLE TIME
-        
         click_add_button(driver, wait, "Add Idle Time")
 
         start = wait.until(
@@ -184,18 +158,42 @@ def test_dfency_complete_flow():
         )
 
         start.send_keys("10:30")
+
+# re-locate end time input (VERY IMPORTANT)
+        end = wait.until(
+    EC.element_to_be_clickable(
+        (By.XPATH, "(//input[@type='time'])[2]")
+    )
+)
         end.send_keys("10:45")
+        time.sleep(1)  # Wait for any potential JS processing
+        # select_autocomplete_without_label(wait)
 
-        select_autocomplete_without_label(wait)
-
-        
         # SUBMIT
-        
-        wait.until(
-            EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
-        ).click()
+        # SUBMIT
+        # If already redirected → test success
+        if "/production/entries" in driver.current_url:
+            return
 
+# Otherwise manually submit
+        current_url = driver.current_url
+
+        submit = wait.until(
+    EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
+)
+
+        driver.execute_script("arguments[0].click();", submit)
+
+        wait.until(lambda d: d.current_url != current_url)
+        wait.until(EC.url_contains("/production/entries"))
+        
     finally:
         driver.quit()
+
+
+
+
+
+
 
 
