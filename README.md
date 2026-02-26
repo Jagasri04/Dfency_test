@@ -1,41 +1,45 @@
 # DFENCY Workflow Automation – Selenium (Python)
 
 This project automates the **DFENCY application workflow** using **Selenium with Python and PyTest**.  
-It validates a flow starting from login, user management, and finally production data entry.
+It covers functional automation of major modules including inventory, production, employees, machines, operations, rejection reasons, and more.
+
 
 ---
 
-## Automated Workflow 
 
-The automation follows this exact sequence:
+## ✅ Features Implemented
 
-1. **Login** to the DFENCY application  
-2. Navigate to **Users section**
-3. **Add a new user** and validate user creation
-4. Navigate to **Production Data Entry**
-5. Fill **Basic Information**
-6. Fill **Component Information**
-7. Enter **Production Schedule**
-8. Enter **Quantity Tracking values**
-9. Click **Add Material** and fill
-10. Click **Add Idle Time** and fill
-11. Submit production entry and validate successful completion
+- Deterministic test execution (no random selection)
+- Stable MUI dropdown handling
+- JavaScript-based submit clicks to avoid UI overlay issues
+- Post-submit stabilization waits
+- Reusable UI helper utilities
+- Structured test organization
+- Inventory inward/outward & stock adjustment coverage
+- Production entry automation
+- Rejection reason workflow automation
 
+---
 
-## 🚀 Setup Instructions
+## 🔧 Setup Instructions
 
-### 1️⃣ Clone the repository
+### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/Jagasri04/Dfency_test.git
-cd microvsta
+cd Dfency_test
 ```
 
-2️⃣ (Optional) Create virtual environment
+### 2️⃣ Create Virtual Environment (Recommended)
 python -m venv venv
 venv\Scripts\activate
 
-3️⃣ Install dependencies
+### 3️⃣ Install Dependencies
 pip install -r requirements.txt
 
-▶️ Run
-python -m pytest tests/test_dfency_flow.py
+Run all tests:
+python -m pytest -v
+
+Run specific test:
+python -m pytest tests/test_rejection_reasons.py -v
+
