@@ -1,17 +1,15 @@
 # tests/test_rejection_reasons.py
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from conftest import BASE_URL
 from utils.ui_helpers import safe_text_input
 from utils.data_factory import unique_code, unique_name
 
-from selenium.webdriver.common.keys import Keys
+
 
 def select_mui_dropdown(driver, wait, field_id, option_text):
-    # Click the MUI select (more flexible locator)
+   
     dropdown = wait.until(
         EC.element_to_be_clickable(
             (By.XPATH, f"//*[@id='{field_id}']")
@@ -21,14 +19,14 @@ def select_mui_dropdown(driver, wait, field_id, option_text):
     driver.execute_script("arguments[0].scrollIntoView(true);", dropdown)
     driver.execute_script("arguments[0].click();", dropdown)
 
-    # Wait for dropdown menu container (MUI renders it separately)
+    # Wait for dropdown menu container 
     wait.until(
         EC.visibility_of_element_located(
             (By.XPATH, "//ul[contains(@class,'MuiList-root')]")
         )
     )
 
-    # Now click the option by visible text (more relaxed match)
+    # Now click the option by visible text 
     option = wait.until(
         EC.element_to_be_clickable(
             (By.XPATH, f"//*[contains(text(), '{option_text}')]")
@@ -43,7 +41,7 @@ def test_add_rejection_reason(driver):
 
     driver.get(f"{BASE_URL}rejection-reasons")
 
-    # ✅ Add Reason button (already fixed)
+    #  Add Reason button 
     add_reason_btn = wait.until(
         EC.element_to_be_clickable(
             (By.XPATH, "//button[contains(., 'Add Reason')]")
@@ -67,7 +65,7 @@ def test_add_rejection_reason(driver):
 
     select_mui_dropdown(driver,wait,"severity", "Medium")
 
-    # ✅ FIXED CREATE BUTTON CLICK
+    # FIXED CREATE BUTTON CLICK
     create_btn = wait.until(
         EC.element_to_be_clickable(
             (By.XPATH, "//button[@type='submit' and contains(., 'Create')]")

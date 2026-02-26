@@ -9,11 +9,9 @@ from utils.ui_helpers import (
     commit_number_input,
     select_autocomplete_by_index
 )
-from utils.assertions import assert_no_error_message
-
 
 # ===============================
-# REACT SAFE INPUT (IMPORTANT FIX)
+# REACT SAFE INPUT 
 # ===============================
 
 def force_type(driver, element, value):

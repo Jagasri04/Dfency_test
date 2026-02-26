@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from utils.driver_setup import get_driver
 from utils.data_factory import unique_code
-
+from conftest import BASE_URL
 
 
 # ENV
@@ -26,7 +26,7 @@ def test_add_employee():
 
     try:
         # LOGIN
-        driver.get("https://dev.ddatatechnologies.com/dfency/")
+        driver.get(BASE_URL)
         wait.until(EC.visibility_of_element_located((By.NAME, "username"))).send_keys(USERNAME)
         wait.until(EC.visibility_of_element_located((By.NAME, "password"))).send_keys(PASSWORD)
         wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
@@ -41,9 +41,9 @@ def test_add_employee():
         wait.until(EC.url_contains("/dashboard"))
 
         # ADD EMPLOYEE
-        driver.get("https://dev.ddatatechnologies.com/dfency/users/add")
+        driver.get(f"{BASE_URL}users/add")
 
-        # ✅ Generate unique test data (fix for full-suite failure)
+        
         unique_id = uuid.uuid4().hex[:6]
         employee_code = unique_code("EMP")
         username = f"user{unique_id}"

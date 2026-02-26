@@ -11,7 +11,7 @@ from utils.assertions import (assert_form_submitted,assert_success_redirect,asse
 
 
 # ===============================
-# HELPERS (same as inward)
+# HELPERS 
 # ===============================
 
 def click_button_by_text(driver, wait, text):

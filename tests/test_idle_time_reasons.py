@@ -1,9 +1,7 @@
 # tests/test_idle_time_reasons.py
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from conftest import BASE_URL
 from utils.ui_helpers import safe_text_input
 from utils.data_factory import unique_code, unique_name
@@ -14,7 +12,7 @@ def test_add_idle_time_reason(driver):
 
     driver.get(f"{BASE_URL}idle-time-reasons")
 
-    # ✅ FIXED PART — Add Reason Button Click
+    #  Add Reason Button Click
     add_button = wait.until(
         EC.presence_of_element_located(
             (By.XPATH, "//button[.//text()[normalize-space()='Add Reason']]")
@@ -31,7 +29,7 @@ def test_add_idle_time_reason(driver):
     ))
 
     driver.execute_script("arguments[0].click();", add_button)
-    # ✅ END FIX
+    
 
     wait.until(EC.url_contains("/idle-time-reasons/add"))
 

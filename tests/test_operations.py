@@ -1,9 +1,7 @@
 # tests/test_operations.py
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from conftest import BASE_URL
 from utils.ui_helpers import safe_text_input
 from utils.data_factory import unique_code, unique_name
@@ -16,7 +14,7 @@ def test_add_operation(driver):
     # ===============================
     driver.get(f"{BASE_URL}operations")
 
-    # ✅ FIXED ADD OPERATION BUTTON (MUI safe)
+    #  FIXED ADD OPERATION BUTTON 
     add_operation_btn = wait.until(
         EC.element_to_be_clickable(
             (By.XPATH, "//button[contains(., 'Add Operation')]")
@@ -60,7 +58,7 @@ def test_add_operation(driver):
         "Face Mill, End Mill"
     )
 
-    # ✅ FIXED DESCRIPTION (textarea safe)
+    #  FIXED DESCRIPTION 
     description = wait.until(
         EC.presence_of_element_located((By.ID, "description"))
     )
@@ -69,7 +67,7 @@ def test_add_operation(driver):
     description.send_keys("Initial material removal operation")
 
     # ===============================
-    # SUBMIT (MUI SAFE)
+    # SUBMIT 
     # ===============================
     create_btn = wait.until(
         EC.element_to_be_clickable(

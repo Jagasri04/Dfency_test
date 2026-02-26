@@ -1,12 +1,10 @@
 # tests/test_components.py
 import os
-import time
 from dotenv import load_dotenv
 from utils.data_factory import unique_code, unique_name
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from conftest import BASE_URL
 from utils.ui_helpers import safe_text_input
 
@@ -34,7 +32,7 @@ def test_add_component(driver):
     # ===============================
     driver.get(f"{BASE_URL}components")
 
-    # ✅ FIXED PART — Add Component Button Click
+    #  Add Component Button Click
     add_component_btn = wait.until(
         EC.presence_of_element_located((
             By.XPATH,
@@ -53,7 +51,7 @@ def test_add_component(driver):
     )))
 
     driver.execute_script("arguments[0].click();", add_component_btn)
-    # ✅ END FIX
+    
 
     wait.until(EC.url_contains("/components/add"))
 

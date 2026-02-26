@@ -2,7 +2,7 @@
 import os
 from dotenv import load_dotenv
 import time
-
+from conftest import BASE_URL
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -64,7 +64,7 @@ def test_add_shift():
         # ===============================
         # LOGIN
         # ===============================
-        driver.get("https://dev.ddatatechnologies.com/dfency/")
+        driver.get(BASE_URL)
 
         wait.until(
             EC.visibility_of_element_located((By.NAME, "username"))
@@ -90,9 +90,9 @@ def test_add_shift():
         # ===============================
         # SHIFTS PAGE
         # ===============================
-        driver.get("https://dev.ddatatechnologies.com/dfency/shifts")
+        driver.get(f"{BASE_URL}shifts")
 
-        # ✅ FIXED ADD SHIFT BUTTON CLICK
+        # FIXED ADD SHIFT BUTTON CLICK
         add_shift_btn = wait.until(
             EC.element_to_be_clickable(
                 (By.XPATH, "//button[contains(., 'Add Shift')]")

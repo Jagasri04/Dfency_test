@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.keys import Keys
-
+from conftest import BASE_URL
 from utils.driver_setup import get_driver
 
 # ENV
@@ -101,7 +101,7 @@ def test_production_entry():
 
     try:
         # LOGIN
-        driver.get("https://dev.ddatatechnologies.com/dfency/")
+        driver.get(BASE_URL)
         wait.until(EC.visibility_of_element_located((By.NAME, "username"))).send_keys(USERNAME)
         wait.until(EC.visibility_of_element_located((By.NAME, "password"))).send_keys(PASSWORD)
         wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))).click()
@@ -116,7 +116,7 @@ def test_production_entry():
         wait.until(EC.url_contains("/dashboard"))
 
         # PRODUCTION ENTRY
-        driver.get("https://dev.ddatatechnologies.com/dfency/production/add")
+        driver.get(f"{BASE_URL}production/add")
         wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
 
         page = driver.find_element(By.TAG_NAME, "body")
@@ -159,7 +159,7 @@ def test_production_entry():
 
         start.send_keys("10:30")
 
-# re-locate end time input (VERY IMPORTANT)
+# re-locate end time input 
         end = wait.until(
     EC.element_to_be_clickable(
         (By.XPATH, "(//input[@type='time'])[2]")
@@ -167,11 +167,10 @@ def test_production_entry():
 )
         end.send_keys("10:45")
         time.sleep(1)  # Wait for any potential JS processing
-        # select_autocomplete_without_label(wait)
+        
 
         # SUBMIT
-        # SUBMIT
-        # If already redirected → test success
+
         if "/production/entries" in driver.current_url:
             return
 

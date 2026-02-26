@@ -2,7 +2,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from conftest import BASE_URL
 from utils.ui_helpers import safe_text_input
 from utils.data_factory import unique_code, unique_name
@@ -67,7 +66,7 @@ def test_add_machine(driver):
         "XYZ-123"
     )
 
-    # ✅ Select different status (example: Inactive)
+    # Select different status 
     status_dropdown = wait.until(
     EC.element_to_be_clickable((By.ID, "status"))
 )

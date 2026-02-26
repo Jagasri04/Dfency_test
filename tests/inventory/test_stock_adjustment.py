@@ -24,14 +24,14 @@ def test_stock_adjustment(driver):
     # COMPONENT SELECTION
     # ===============================
 
-    # 1 → Component
+   
     select_autocomplete_by_index(wait, 1)
 
     # ===============================
     # ADJUSTMENT TYPE
     # ===============================
 
-    # 2 → Adjustment Type (Increase / Decrease)
+
     select_autocomplete_by_index(wait, 2)
 
     # ===============================
